@@ -109,14 +109,14 @@ class ProductOfRedNodesVisitor extends TreeVis {
     }
 
     public void visitNode(TreeNode node) {
-      	if(node.getColor() == 0){
-           productResult = productResult * node.getValue()   
+      	if(node.getColor() == Color.RED){
+           productResult = productResult * node.getValue();   
         }
     }
 
     public void visitLeaf(TreeLeaf leaf) {
-      	if(leaf.getColor() == 0){
-           productResult = productResult * leaf.getValue()   
+      	if(leaf.getColor() == Color.RED){
+           productResult = productResult * leaf.getValue();   
         }
     }
 }
@@ -141,7 +141,7 @@ class FancyVisitor extends TreeVis {
     }
 
     public void visitLeaf(TreeLeaf leaf) {
-    	if(leaf.getColor() == 0){
+    	if(leaf.getColor() == Color.RED){
             sumOfLeafNodeRed += leaf.getValue();
         }
     }
@@ -150,13 +150,49 @@ class FancyVisitor extends TreeVis {
 public class Trees {
   
     public static Tree solve() {
-        Scanner scan = new Scanner(system.in);
+        Scanner scan = new Scanner(System.in);
         int n = scan.nextInt();
         int [] values = new int[n];
-        int [] colors = new int[n];
+        Color [] colors = new Color[n];
+        int [] parents = new int[n];
+        Tree [] trees = new Tree[n];
+        ArrayList nodes = new ArrayList<>();
+
         for(int i = 0; i < n; i++) values[i] = scan.nextInt();
-        for(int i = 0; i < n; i++) colors[i] = scan.nextInt();
-        
+        for(int i = 0; i < n; i++){
+            if(scan.nextInt() == 0) colors[i] = Color.RED;
+            else colors[i] = Color.GREEN;
+            parents[i] = -1;
+        }
+        int count = 4;
+        while(count != 0){
+            int father = scan.nextInt();
+            int child = scan.nextInt();
+            parents[child - 1] = father - 1;
+            nodes.add(father - 1);
+            count--;
+        }
+        Tree root = null;
+        for(int i = 0; i < n; i++){           
+            if(parents[i] == -1){
+                if(trees[i] == null){
+                    if(!nodes.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
+                    else trees[i] = new TreeNode(values[i], colors[i], 0);
+                }
+                root = trees[i];
+            }
+            else{
+            //    if(trees[parents[i]] == null) trees[parents[i]] = new TreeNode();
+            //    trees[parents[i]].add(trees[i]);
+                if(trees[i] == null){
+                    if(!nodes.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+                    else trees[i] = new TreeNode(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+                }
+                ((TreeNode) trees[parents[i]]).addChild(trees[i]);
+            }
+        }
+        return root;
+
     }
 
 
