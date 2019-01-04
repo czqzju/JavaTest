@@ -1,12 +1,8 @@
-import java.util.ArrayList;
 import java.io.*;
 import java.util.*;
 import java.text.*;
 import java.math.*;
 import java.util.regex.*;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 
 enum Color {
     RED, GREEN
@@ -157,6 +153,7 @@ public class Trees {
         int [] parents = new int[n];
         Tree [] trees = new Tree[n];
         ArrayList nodes = new ArrayList<>();
+        Map edges = new HashMap<>();
 
         for(int i = 0; i < n; i++) values[i] = scan.nextInt();
         for(int i = 0; i < n; i++){
@@ -164,12 +161,25 @@ public class Trees {
             else colors[i] = Color.GREEN;
             parents[i] = -1;
         }
-        int count = 4;
+        int count = 99;
         while(count != 0){
-            int father = scan.nextInt();
-            int child = scan.nextInt();
-            parents[child - 1] = father - 1;
-            nodes.add(father - 1);
+            int e1 = scan.nextInt();
+            int e2 = scan.nextInt();
+            if(e1 == 1) {
+            	parents[e2 - 1] = e1 - 1;
+            	edges.put(e2 - 1, e1 - 1);
+            }
+            else {
+            	if(edges.containsKey(e1 - 1) || edges.containsValue(e1 - 1)) {
+            		parents[e2 - 1] = e1 - 1;
+                	edges.put(e2 - 1, e1 - 1);
+            	}
+            	else if(edges.containsKey(e2 - 1) || edges.containsValue(e2 - 1)) {
+            		parents[e1 - 1] = e2 - 1;
+                	edges.put(e1 - 1, e2 - 1);
+            	}
+            }
+            
             count--;
         }
         Tree root = null;
