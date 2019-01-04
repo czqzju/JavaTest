@@ -152,8 +152,8 @@ public class Trees {
         Color [] colors = new Color[n];
         int [] parents = new int[n];
         Tree [] trees = new Tree[n];
-        ArrayList nodes = new ArrayList<>();
-        Map edges = new HashMap<>();
+        ArrayList<int []> nodes = new ArrayList<int []>();
+        Map<Integer, Integer> edges = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < n; i++) values[i] = scan.nextInt();
         for(int i = 0; i < n; i++){
@@ -178,9 +178,24 @@ public class Trees {
             		parents[e1 - 1] = e2 - 1;
                 	edges.put(e1 - 1, e2 - 1);
             	}
+            	else {
+            		int [] tmp = new int[2];
+            		tmp[0] = e1;
+            		tmp[1] = e2;
+            		nodes.add(tmp);
+            	}
             }
             count--;
             
+        }
+        while(!nodes.isEmpty()) {
+        	Iterator<int []> iter = nodes.iterator();
+        	while(iter.hasNext()) {
+        		int [] tmp = (int [])iter.next();
+        		System.out.println(tmp[0] + " " + tmp[1]);
+        		iter.remove();
+        	}
+        	
         }
         Tree root = null;
         for(int i = 0; i < n; i++){           
