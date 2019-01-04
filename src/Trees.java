@@ -144,6 +144,18 @@ class FancyVisitor extends TreeVis {
 }
 
 public class Trees {
+	public static void createNodeOrLeaf(Tree [] trees, int [] parents, int i, int [] values, Color [] colors, Map<Integer, Integer> edges) {
+		if(trees[parents[i]] == null) {
+			createNodeOrLeaf(trees, parents, parents[i], values, colors, edges);
+		}
+		
+		if(trees[i] == null){
+            if(!edges.containsKey(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+            else trees[i] = new TreeNode(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+            ((TreeNode) trees[parents[i]]).addChild(trees[i]);
+        }
+        	
+	}
   
     public static Tree solve() {
         Scanner scan = new Scanner(System.in);
@@ -192,8 +204,18 @@ public class Trees {
         	Iterator<int []> iter = nodes.iterator();
         	while(iter.hasNext()) {
         		int [] tmp = (int [])iter.next();
-        		System.out.println(tmp[0] + " " + tmp[1]);
-        		iter.remove();
+        		int e1 = tmp[0];
+        		int e2 = tmp[1];
+        		if(edges.containsKey(e1 - 1) || edges.containsValue(e1 - 1)) {
+            		parents[e2 - 1] = e1 - 1;
+                	edges.put(e2 - 1, e1 - 1);
+                	iter.remove();
+            	}
+            	else if(edges.containsKey(e2 - 1) || edges.containsValue(e2 - 1)) {
+            		parents[e1 - 1] = e2 - 1;
+                	edges.put(e1 - 1, e2 - 1);
+                	iter.remove();
+            	}
         	}
         	
         }
@@ -201,19 +223,13 @@ public class Trees {
         for(int i = 0; i < n; i++){           
             if(parents[i] == -1){
                 if(trees[i] == null){
-                    if(!nodes.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
+                    if(!edges.containsKey(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
                     else trees[i] = new TreeNode(values[i], colors[i], 0);
                 }
                 root = trees[i];
             }
             else{
-            //    if(trees[parents[i]] == null) trees[parents[i]] = new TreeNode();
-            //    trees[parents[i]].add(trees[i]);
-                if(trees[i] == null){
-                    if(!nodes.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
-                    else trees[i] = new TreeNode(values[i], colors[i], trees[parents[i]].getDepth() + 1);
-                }
-                ((TreeNode) trees[parents[i]]).addChild(trees[i]);
+            	createNodeOrLeaf(trees, parents, i, values, colors, edges);     
             }
         }
         return root;
