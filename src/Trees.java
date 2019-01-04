@@ -141,7 +141,7 @@ class FancyVisitor extends TreeVis {
     }
 
     public void visitLeaf(TreeLeaf leaf) {
-    	if(leaf.getColor() == Color.RED){
+    	if(leaf.getColor() == Color.GREEN){
             sumOfLeafNodeRed += leaf.getValue();
         }
     }
@@ -164,13 +164,11 @@ public class Trees {
             else colors[i] = Color.GREEN;
             parents[i] = -1;
         }
-        int count = 4;
-        while(count != 0){
+        while(scan.hasNextLine()){
             int father = scan.nextInt();
             int child = scan.nextInt();
             parents[child - 1] = father - 1;
             nodes.add(father - 1);
-            count--;
         }
         Tree root = null;
         for(int i = 0; i < n; i++){           
