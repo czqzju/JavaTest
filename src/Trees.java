@@ -141,13 +141,13 @@ class FancyVisitor extends TreeVis {
 }
 
 public class Trees {
-	public static void createNodeOrLeaf(Tree [] trees, int [] parents, int i, int [] values, Color [] colors, Map<Integer, Integer> edges) {
+	public static void createNodeOrLeaf(Tree [] trees, int [] parents, int i, int [] values, Color [] colors, Set nonleaf, Set leaves) {
 		if(trees[parents[i]] == null) {
-			createNodeOrLeaf(trees, parents, parents[i], values, colors, edges);
+			createNodeOrLeaf(trees, parents, parents[i], values, colors, nonleaf, leaves);
 		}
 		
 		if(trees[i] == null){
-            if(!edges.containsValue(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+            if(!nonleaf.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
             else trees[i] = new TreeNode(values[i], colors[i], trees[parents[i]].getDepth() + 1);
             ((TreeNode) trees[parents[i]]).addChild(trees[i]);
         }
@@ -162,7 +162,8 @@ public class Trees {
         int [] parents = new int[n];
         Tree [] trees = new Tree[n];
         ArrayList<int []> nodes = new ArrayList<int []>();
-        Map<Integer, Integer> edges = new HashMap<Integer, Integer>();
+        Set<Integer> nonLeaf = new HashSet<>();
+        Set<Integer> leaves = new HashSet<>();
 
         for(int i = 0; i < n; i++) values[i] = scan.nextInt();
         for(int i = 0; i < n; i++){
@@ -176,16 +177,19 @@ public class Trees {
             int e2 = scan.nextInt();
             if(e1 == 1) {
             	parents[e2 - 1] = e1 - 1;
-            	edges.put(e2 - 1, e1 - 1);
+            	nonLeaf.add(e1 - 1);
+            	leaves.add(e2 - 1);
             }
             else {
-            	if(edges.containsKey(e1 - 1) || edges.containsValue(e1 - 1)) {
+            	if(leaves.contains(e1 - 1) || nonLeaf.contains(e1 - 1)) {
             		parents[e2 - 1] = e1 - 1;
-                	edges.put(e2 - 1, e1 - 1);
+            		nonLeaf.add(e1 - 1);
+                	leaves.add(e2 - 1);
             	}
-            	else if(edges.containsKey(e2 - 1) || edges.containsValue(e2 - 1)) {
+            	else if(leaves.contains(e2 - 1) || nonLeaf.contains(e2 - 1)) {
             		parents[e1 - 1] = e2 - 1;
-                	edges.put(e1 - 1, e2 - 1);
+            		nonLeaf.add(e2 - 1);
+                	leaves.add(e1 - 1);
             	}
             	else {
             		int [] tmp = new int[2];
@@ -203,14 +207,16 @@ public class Trees {
         		int [] tmp = (int [])iter.next();
         		int e1 = tmp[0];
         		int e2 = tmp[1];
-        		if(edges.containsKey(e1 - 1) || edges.containsValue(e1 - 1)) {
+        		if(leaves.contains(e1 - 1) || nonLeaf.contains(e1 - 1)) {
             		parents[e2 - 1] = e1 - 1;
-                	edges.put(e2 - 1, e1 - 1);
+            		nonLeaf.add(e1 - 1);
+                	leaves.add(e2 - 1);
                 	iter.remove();
             	}
-            	else if(edges.containsKey(e2 - 1) || edges.containsValue(e2 - 1)) {
+            	else if(leaves.contains(e2 - 1) || nonLeaf.contains(e2 - 1)) {
             		parents[e1 - 1] = e2 - 1;
-                	edges.put(e1 - 1, e2 - 1);
+            		nonLeaf.add(e2 - 1);
+                	leaves.add(e1 - 1);
                 	iter.remove();
             	}
         	}
@@ -220,13 +226,13 @@ public class Trees {
         for(int i = 0; i < n; i++){           
             if(parents[i] == -1){
                 if(trees[i] == null){
-                    if(!edges.containsValue(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
+                    if(!nonLeaf.contains(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
                     else trees[i] = new TreeNode(values[i], colors[i], 0);
                 }
                 root = trees[i];
             }
             else{
-            	createNodeOrLeaf(trees, parents, i, values, colors, edges);     
+            	createNodeOrLeaf(trees, parents, i, values, colors, nonLeaf, leaves);     
             }
         }
         return root;
