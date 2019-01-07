@@ -94,25 +94,22 @@ class SumInLeavesVisitor extends TreeVis {
 }
 
 class ProductOfRedNodesVisitor extends TreeVis {
-    private int productResult;
-
-    public ProductOfRedNodesVisitor(){
-        productResult = 1;
-    }
+	private long productResult = 1;
+    private final int M = 1000000007;
 
     public int getResult() {
-        return productResult;
+        return (int) productResult;
     }
 
     public void visitNode(TreeNode node) {
       	if(node.getColor() == Color.RED){
-           productResult = productResult * node.getValue();   
+           productResult = (productResult * node.getValue()) % M;   
         }
     }
 
     public void visitLeaf(TreeLeaf leaf) {
       	if(leaf.getColor() == Color.RED){
-           productResult = productResult * leaf.getValue();   
+           productResult = (productResult * leaf.getValue()) % M;   
         }
     }
 }
