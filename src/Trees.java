@@ -171,8 +171,7 @@ public class Trees {
             else colors[i] = Color.GREEN;
             parents[i] = -1;
         }
-        int count = 99;
-        while(count > 0){
+        while(scan.hasNext()){
             int e1 = scan.nextInt();
             int e2 = scan.nextInt();
             if(e1 == 1) {
@@ -198,7 +197,6 @@ public class Trees {
             		nodes.add(tmp);
             	}
             }
-            count--;
             
         }
         while(!nodes.isEmpty()) {
