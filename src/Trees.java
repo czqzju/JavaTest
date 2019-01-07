@@ -150,7 +150,7 @@ public class Trees {
 		}
 		
 		if(trees[i] == null){
-            if(!edges.containsKey(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
+            if(!edges.containsValue(i)) trees[i] = new TreeLeaf(values[i], colors[i], trees[parents[i]].getDepth() + 1);
             else trees[i] = new TreeNode(values[i], colors[i], trees[parents[i]].getDepth() + 1);
             ((TreeNode) trees[parents[i]]).addChild(trees[i]);
         }
@@ -223,7 +223,7 @@ public class Trees {
         for(int i = 0; i < n; i++){           
             if(parents[i] == -1){
                 if(trees[i] == null){
-                    if(!edges.containsKey(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
+                    if(!edges.containsValue(i)) trees[i] = new TreeLeaf(values[i], colors[i], 0);
                     else trees[i] = new TreeNode(values[i], colors[i], 0);
                 }
                 root = trees[i];
