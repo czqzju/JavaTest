@@ -9,17 +9,30 @@ import java.util.regex.*;
 public class Solution {
 
     // Complete the decibinaryNumbers function below.
-    public static Integer decibinaryNumbers(Integer x)
+//	private static int findPosition(Integer target, List cnt) {
+//		int length = cnt.size();
+//		for(int i = 0; i < length; i++) {
+//			if((Integer)cnt.get(i) >= target) {
+//				return i;
+//			}
+//		}
+//		return -1;
+//	}
+    public static Integer decibinaryNumbers(long x)
     {
-        Integer idx = x - 1;
+    	
+//        Integer idx = x - 1;
         int n = 0;
         long count = 0;
+
         while (true)
         {
             List<Integer> repsForN = generateAllDbReps(n);
-            if (idx >= count && idx < count + repsForN.size())
+
+            
+            if (x <= count + repsForN.size())
             {
-                return repsForN.get((int)(idx-count));
+                return repsForN.get((int)(x-count-1));
             }
             count += repsForN.size();
             n++;
@@ -77,10 +90,9 @@ public class Solution {
         int q = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
         
-        Map<Integer, List<Integer>> data = 
 
         for (int qItr = 0; qItr < q; qItr++) {
-            Integer x = scanner.nextInt();
+            long x = scanner.nextLong();
             scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
             Integer result = decibinaryNumbers(x);
