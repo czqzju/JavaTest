@@ -42,65 +42,46 @@ public class Poisonous_Plants {
 //            if(l1 == l2) res--;
 //        }while(l2 < l1);
     	
-    	Stack<Integer> s = new Stack<Integer>();
-    	for(int i = p.length - 1 ; i >= 0 ; i--) {
-    		if(i - 1 >= 0) {
-    			if(p[i] <= p[i-1]) {
-    				s.add(p[i]);
-    			}
-    		}
-    		else s.add(p[i]);
-    	}
-    	if(s.size() == p.length) return 0;
-    	int [] pp = new int[s.size()];
+    	List<ArrayList<Integer>> s = new ArrayList<ArrayList<Integer>>();
     	int idx = 0;
-    	while(!s.isEmpty()) {
-    		pp[idx] = s.pop();
-    		idx++;
-    	}
+    	s.add(new ArrayList<Integer>());
     	
-    	boolean upOrder = false;
-    	int maxC = 0;
-    	int tmp = 0;
-    	for(int i =0 ; i < pp.length; i++) {
-    		if(s.isEmpty()) {
-    			s.add(pp[i]);
-    			tmp = 0;
+    	while(idx < p.length) {
+    		ArrayList<Integer> tmp = s.get(s.size()-1);
+    		if(tmp.isEmpty()) {
+    			tmp.add(p[idx]);
+    			idx++;
+    		}
+    		else if(tmp.get(tmp.size()-1) >= p[idx]){
+    			tmp.add(p[idx]);
+    			idx++;
     		}
     		else {
-    			if(s.peek() < pp[i]) {
-					if(tmp == 0) {
-    					tmp = 1;
+    			ArrayList<Integer> tmpNew = new ArrayList<Integer>();
+    			tmpNew.add(p[idx]);
+    			s.add(tmpNew);
+    			idx++;
+    		}
+    	}
+    	int cnt = 0;
+    	while(s.size() > 1) {
+    		int length = s.size();
+    		for(int i = length - 1; i > 0; i--) {
+    			ArrayList<Integer> after = s.get(i);
+    			ArrayList<Integer> before = s.get(i-1);
+    					
+    			if(after.get(0) > before.get(before.size()-1)) {
+    				after.remove(0);
+    				if(after.isEmpty() || after.get(0) <= before.get(before.size()-1)) {
+    					before.addAll(after);
+    					s.remove(after);
     				}
-    				upOrder = true;
-					s.add(pp[i]);
-    			}
-    			else {
-    				while(!s.isEmpty() && s.peek() >= pp[i]) {
-        				upOrder = false;
-        				s.pop();
-        			}
-    				if(s.isEmpty()) {
-        				s.add(pp[i]);
-        				tmp = 0;
-        				
-        			}
-        			else {
-        				if(upOrder == false) {
-        					tmp++;
-        					upOrder = true;
-        					s.add(pp[i]);
-        				}
-        				else {
-        					s.add(pp[i]);
-        				}
-        			}
     			}
     		}
-    		if(tmp > maxC) maxC = tmp;
+    		cnt++;
     	}
-
-        return maxC+1;
+    	
+    	return cnt;
 
     }
 
