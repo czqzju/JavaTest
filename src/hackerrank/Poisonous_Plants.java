@@ -41,6 +41,7 @@ public class Poisonous_Plants {
 //            q2 = t;
 //            if(l1 == l2) res--;
 //        }while(l2 < l1);
+// above is the early slow solution   	
     	
     	List<ArrayList<Integer>> s = new ArrayList<ArrayList<Integer>>();
     	int idx = 0;
@@ -74,8 +75,12 @@ public class Poisonous_Plants {
     				after.remove(0);
     				if(after.isEmpty() || after.get(0) <= before.get(before.size()-1)) {
     					before.addAll(after);
-    					s.remove(after);
+    					s.remove(i);
     				}
+    			}
+    			else {
+    				before.addAll(after);
+					s.remove(i);
     			}
     		}
     		cnt++;
