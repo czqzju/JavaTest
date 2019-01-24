@@ -16,7 +16,7 @@ public class Roads_and_Libraries {
 
     // Complete the roadsAndLibraries function below.
     static long roadsAndLibraries(int n, int c_lib, int c_road, int[][] cities) {
-    	int res = n * c_lib;
+    	long res = (long)n * (long)c_lib;
 //    	if (c_road >= c_lib){ // optimal scenario
 //            return res;
 //        }
@@ -71,7 +71,7 @@ public class Roads_and_Libraries {
     			ads.get(cities[i][1]).add(cities[i][0]);
     		}
     	}
-    	int numOfConnected = 0;
+    	long numOfConnected = 0;
     	visited = new int[n+1];
     	
     	for(int i = 1; i <= n; i++) {
@@ -81,7 +81,7 @@ public class Roads_and_Libraries {
     		}
     	}
     	
-    	int cost = numOfConnected * c_lib + (n - 1 - (numOfConnected - 1)) * c_road;
+    	long cost = numOfConnected * c_lib + (n - 1 - (numOfConnected - 1)) * c_road;
     	return cost < res?cost:res;
 
     }
