@@ -17,44 +17,7 @@ public class Roads_and_Libraries {
     // Complete the roadsAndLibraries function below.
     static long roadsAndLibraries(int n, int c_lib, int c_road, int[][] cities) {
     	long res = (long)n * (long)c_lib;
-//    	if (c_road >= c_lib){ // optimal scenario
-//            return res;
-//        }
-//    	List<Set<Integer>> sets = new ArrayList<Set<Integer>>();
-////    	sets.add(new HashSet<Integer>());
-//    	for(int i = 0; i < cities.length; i++) {
-//    		List<Integer> flag = new ArrayList<Integer>();
-//    		for(int j = 0; j < sets.size(); j++) {
-//    			if(sets.get(j).contains(cities[i][0]) || sets.get(j).contains(cities[i][1])){
-//    				sets.get(j).add(cities[i][0]);
-//    				sets.get(j).add(cities[i][1]);
-//    				flag.add(j);
-//    			}
-//    		}
-//    		if(flag.size() == 0) {
-//    			Set<Integer> newSet = new HashSet<Integer>();
-//    			newSet.add(cities[i][0]);
-//    			newSet.add(cities[i][1]);
-//    			sets.add(newSet);
-//    		}
-//    		else if(flag.size() > 1) {
-//    			for(int j = flag.size() - 1; j > 0; j--) {
-//    				sets.get(flag.get(0)).addAll(sets.get(flag.get(j)));
-//    				sets.remove(sets.get(flag.get(j)));
-//    			}
-//    		}
-//    	}
-//    	
-//    	int numOfRoads = 0;
-//    	int numOfCities = 0;
-//    	for(Set s:sets) {
-//    		numOfRoads += s.size() - 1;
-//    		numOfCities += s.size();
-//    	}
-//    	int roadsCost = numOfRoads * c_road + (sets.size() + n - numOfCities) * c_lib;
-//    	if(roadsCost < res) res = roadsCost;
-//    	System.out.println(res);
-//    	return res; 
+
     	
     	ads = new HashMap<Integer, List<Integer>>();
     	for(int i = 0; i < cities.length; i++) {
@@ -101,7 +64,6 @@ public class Roads_and_Libraries {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-//        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
 
         int q = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
@@ -131,12 +93,8 @@ public class Roads_and_Libraries {
 
             long result = roadsAndLibraries(n, c_lib, c_road, cities);
             System.out.println(result);
-
-//            bufferedWriter.write(String.valueOf(result));
-//            bufferedWriter.newLine();
         }
 
-//        bufferedWriter.close();
 
         scanner.close();
     }
