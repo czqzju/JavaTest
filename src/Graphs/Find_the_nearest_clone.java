@@ -104,7 +104,9 @@ public class Find_the_nearest_clone {
     			}
     		}
     		distance++;
+    		Queue<Integer> now = q;
     		q = tmp;
+    		tmp = now;
     	}
     	
     }
