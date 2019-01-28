@@ -45,7 +45,7 @@ public class Matrix {
     	
     	sort(roads, 2);
     	
-    	for(int i = 0; i < n; i++) hasMachine[machines[i]] = true; 
+    	for(int i = 0; i < machines.length; i++) hasMachine[machines[i]] = true; 
     	for(int i = 0; i < n; i++) uset[i] = i;
     	
     	for(int i = 0; i < roads.length; i++) {
@@ -68,13 +68,8 @@ public class Matrix {
     		}
     		
     	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	return 0;
+
+    	return res;
 //    	
 
     }
@@ -160,6 +155,7 @@ public class Matrix {
         }
 
         int result = minTime(n, roads, machines);
+        System.out.println(result);
 
 
         scanner.close();
