@@ -81,25 +81,29 @@ public class Balanced_Forest {
     		if(value * 3 <= sum) continue;
     		x = value;
     		y = sum - x * 2;
-    		visited = new boolean[c.length + 1];
     		
-    		int root = 1;
-    		int cntOfSub = 0;
-    		while(visited[root] == true) root++;
-    		subSum = 0;
-    		found = false;
-    		dfs(cntOfSub, root, c, connectedEdges);
-    		if(count[0] + count[1] == 0) continue;
     		
-    		root = 2;
-    		cntOfSub = 0;
-    		while(visited[root] == true) root++;
-    		subSum = 0;
-    		found = false;
-    		dfs(cntOfSub, root, c, connectedEdges);
-    		
-    		if(count[0] + count[1] < 2) continue;
-    		else return (int)(x - y);
+    		for(int j = 1; j <= c.length; j++) {
+    			visited = new boolean[c.length + 1];
+    			int root = j;
+        		int cntOfSub = 0;
+        		while(visited[root] == true && root < c.length - 1) root++;
+        		subSum = 0;
+        		found = false;
+        		dfs(cntOfSub, root, c, connectedEdges);
+        		if(count[0] + count[1] == 0) continue;
+        		
+        		root = 1;
+        		cntOfSub = 0;
+        		while(visited[root] == true && root < c.length - 1) root++;
+        		subSum = 0;
+        		found = false;
+        		dfs(cntOfSub, root, c, connectedEdges);
+        		if(count[0] + count[1] < 2) continue;
+        		else {
+        			return (int)(x - y);
+        		}
+    		}
     	}
     	
     	return -1;
