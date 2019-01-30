@@ -18,7 +18,6 @@ public class Balanced_Forest {
 	static long x;
 	static long y;
 	static int[] count = new int[2];
-	static long subSum;
 	static boolean found;
 	static int numOfTree;
 	
@@ -81,28 +80,26 @@ public class Balanced_Forest {
     		if(value * 3 <= sum) continue;
     		x = value;
     		y = sum - x * 2;
+    		visited = new boolean[c.length + 1];
+    			
+			int root = 1;
+    		int cntOfSub = 0;
+    		while(visited[root] == true && root < c.length - 1) root++;
+    		ArrayList<Integer> path = new ArrayList<Integer>();
+    		long subSum = 0;
+    		found = false;
+    		dfs(cntOfSub, path, root, c, connectedEdges);
+    		if(count[0] + count[1] == 0) continue;
     		
-    		
-    		for(int j = 1; j <= c.length; j++) {
-    			visited = new boolean[c.length + 1];
-    			int root = j;
-        		int cntOfSub = 0;
-        		while(visited[root] == true && root < c.length - 1) root++;
-        		subSum = 0;
-        		found = false;
-        		dfs(cntOfSub, root, c, connectedEdges);
-        		if(count[0] + count[1] == 0) continue;
-        		
-        		root = 1;
-        		cntOfSub = 0;
-        		while(visited[root] == true && root < c.length - 1) root++;
-        		subSum = 0;
-        		found = false;
-        		dfs(cntOfSub, root, c, connectedEdges);
-        		if(count[0] + count[1] < 2) continue;
-        		else {
-        			return (int)(x - y);
-        		}
+    		root = 1;
+    		cntOfSub = 0;
+    		while(visited[root] == true && root < c.length - 1) root++;
+    		long subSum = 0;
+    		found = false;
+    		dfs(cntOfSub, path, root, c, connectedEdges);
+    		if(count[0] + count[1] < 2) continue;
+    		else {
+    			return (int)(x - y);
     		}
     	}
     	
@@ -110,11 +107,9 @@ public class Balanced_Forest {
 
     }
     
-    private static void dfs(int cntOfSub, int root, int[] c, HashMap<Integer, TreeSet<Integer>> connectedEdges) {
-    	if(found == true) return;
-    	
+    private static void dfs(int cntOfSub, ArrayList<Integer> path, int root, int[] c, HashMap<Integer, TreeSet<Integer>> connectedEdges) {
+    	if(found == true || visited[root] == true) return;
     	cntOfSub++;
-    	visited[root] = true;
     	subSum += c[root - 1];
     	
     	if(subSum == x && cntOfSub == numOfTree) {
