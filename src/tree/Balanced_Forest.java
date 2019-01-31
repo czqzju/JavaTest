@@ -48,7 +48,7 @@ public class Balanced_Forest {
 		if(connectedEdges.containsKey(root.id)) {
 			TreeSet<Integer> tmp= connectedEdges.get(root.id);
 			for(Integer id : tmp) {
-				if(id != root.parent.id) {
+				if(root.parent != null && id != root.parent.id) {
 					treeNode child = new treeNode(id, c[id - 1]);
 					child.parent = root;
 					root.children.add(child);
@@ -94,8 +94,11 @@ public class Balanced_Forest {
         	
         }
         
-        treeNode root = new treeNode(root_node, c[root_node - 1]);
-        root.parent = root;
+        treeNode root = new treeNode(root_node, c[root_node - 1]);      
+        treeNode[] treeNodes = new treeNode[c.length];
+        treeNodes[root.id - 1] = root;
+        
+
         createTree(root, connectedEdges, c);
         
         return -1;
