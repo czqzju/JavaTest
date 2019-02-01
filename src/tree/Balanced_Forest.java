@@ -20,7 +20,7 @@ class treeNode{
 	public treeNode(int id, int data) {
 		this.id = id;
 		this.data = data;
-		sum = 0;
+		sum = data;
 		children = new ArrayList<treeNode>();
 		parent = null;
 	}
@@ -29,15 +29,13 @@ class treeNode{
 
 public class Balanced_Forest {
 	
-	private static void sort(int[][] ob, final int order) {
-		Arrays.sort(ob, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				int[] one = (int[]) o1;
-				int[] two = (int[]) o2;
-				
-				int k = order;
-				if(one[k] > two[k]) return 1;
-				else if(one[k] < two[k]) return -1;
+	static treeNode[] treeNodes;
+	
+	private static void sort(treeNode[] ob) {
+		Arrays.sort(ob, new Comparator<treeNode>() {
+			public int compare(treeNode o1, treeNode o2) {
+				if(o1.sum > o2.sum) return 1;
+				else if(o1.sum < o2.sum) return -1;
 				else return 0;
 				
 			}
@@ -48,10 +46,11 @@ public class Balanced_Forest {
 		if(connectedEdges.containsKey(root.id)) {
 			TreeSet<Integer> tmp= connectedEdges.get(root.id);
 			for(Integer id : tmp) {
-				if(root.parent != null && id != root.parent.id) {
+				if(root.parent == null || (root.parent != null && id != root.parent.id)) {
 					treeNode child = new treeNode(id, c[id - 1]);
 					child.parent = root;
 					root.children.add(child);
+					treeNodes[child.id - 1] = child;
 					createTree(child, connectedEdges, c);
 					root.sum += child.sum;
 				}
@@ -94,13 +93,18 @@ public class Balanced_Forest {
         	
         }
         
-        treeNode root = new treeNode(root_node, c[root_node - 1]);      
-        treeNode[] treeNodes = new treeNode[c.length];
+        treeNode root = new treeNode(root_node, c[root_node - 1]);   
+        treeNodes = new treeNode[c.length];
         treeNodes[root.id - 1] = root;
-        
 
         createTree(root, connectedEdges, c);
+        sort(treeNodes);
+        sum = root.sum;
         
+        for(int i = 0; i < treeNodes.length; i++) {
+        	
+        }
+
         return -1;
     }
         
