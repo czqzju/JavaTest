@@ -104,7 +104,7 @@ public class Insert_a_node_at_a_specific_position_in_a_linked_list {
 
         SinglyLinkedListNode llist_head = insertNodeAtPosition(llist.head, data, position);
 
-        printSinglyLinkedList(llist_head, " ", bufferedWriter);
+//        printSinglyLinkedList(llist_head, " ", bufferedWriter);
 //        bufferedWriter.newLine();
 //
 //        bufferedWriter.close();
