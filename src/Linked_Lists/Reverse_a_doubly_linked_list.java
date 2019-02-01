@@ -71,11 +71,19 @@ public class Reverse_a_doubly_linked_list {
      */
     static DoublyLinkedListNode reverse(DoublyLinkedListNode head) {
     	if(head == null || head.next == null) return head;
-    	DoublyLinkedListNode before = head;
-    	DoublyLinkedListNode after = head.next;
+    	DoublyLinkedListNode before = null;
+    	DoublyLinkedListNode after = head;
+    	
     	do {
-    		before.next = 
-    	}while(true);
+    		DoublyLinkedListNode tmpNext = after.next;
+    		after.next = before;
+    		if(before != null) before.prev = after;
+    		before = after;
+    		after = tmpNext;
+    		
+    	}while(after != null);
+    	before.prev = null;
+    	return before;
 
     }
 
