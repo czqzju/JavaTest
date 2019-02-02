@@ -9,26 +9,36 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
 
+import javax.swing.plaf.multi.MultiButtonUI;
+
 public class Recursion_Davis_Staircase {
 
     // Complete the stepPerms function below.
-	static int cnt;
+	
+	private static int[][] mult(int[][] a){
+		int[][] b = {{0,1,0}, {0,0,1}, {1,1,1}};
+		int[][] res = {{0,0,0}, {0,0,0}, {0,0,0}};
+		for(int i = 0; i < 3; i++)
+			for(int j = 0; j < 3; j++)
+				for(int k = 0; k < 3; k++) {
+					res[i][j] += a[i][k]*b[k][j];
+				}
+		return res;
+	}
+
     static int stepPerms(int n) {
-    	cnt = 0;
-    	stepOne(n);
-    	
-    	return cnt % 1000000007;
+    	int[][] a = {{0,1,0}, {0,0,1}, {1,1,1}};
+    	if(n == 1) return 1;
+    	else if(n == 2) return 2;
+    	else if(n == 3) return 4;
+    	else {
+    		for(int i = 0; i < n-4; i++)
+    			a = mult(a);
+    	}
+    	return a[2][0]*1 + a[2][1]*2 + a[2][2]*4;
 
     }
-    
-    static void stepOne(int n) {
-    	if(n == 0) cnt++;
-    	else if(n > 0) {
-    		stepOne(n - 1);
-    		stepOne(n - 2);
-    		stepOne(n - 3);
-    	}
-    }
+
 
     private static final Scanner scanner = new Scanner(System.in);
 
