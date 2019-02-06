@@ -3,12 +3,8 @@ import java.util.ArrayList;
 
 public class sample {
 	public static void main(String[] args) {
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		path.add(0);
-		System.out.println(path.size());
-		dfs(path);
-		System.out.println(path.size());
+		un res = 7;
+		System.out.println(~res);
 		
 	}
 	
