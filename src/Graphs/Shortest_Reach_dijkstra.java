@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
 
-public class Shortest_Reach {
+public class Shortest_Reach_dijkstra {
 
     // Complete the bfs function below.
     static int[] bfs(int n, int m, int[][] edges, int s) {
