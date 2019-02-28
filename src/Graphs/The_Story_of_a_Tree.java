@@ -24,53 +24,43 @@ public class The_Story_of_a_Tree {
 		}while(r != 0);
 		return a;
 	}
-	static boolean checkRigth(int root, int n, Map<Integer, Set<Integer>> relations, int[][] guesses, int k) {
-		int[] parent = new int[n + 1];
-		parent[root] = -1;
-		int cntRight = 0;
-		Map<Integer, Integer> child_parent = new HashMap<>();
-		for(int i =0; i < guesses.length; i++) child_parent.put(guesses[i][1], guesses[i][0]);
-		
-		Queue<Integer> q = new ArrayDeque<>();
-		Queue<Integer> q1 = new ArrayDeque<>();
-		q.add(root);
-		while(!q.isEmpty()) {
-			while(!q.isEmpty()) {
-				int cur = q.remove();
-				if(relations.containsKey(cur)) {
-					for(int child : relations.get(cur)) {
-						if(parent[child] == 0) {
-							if(child_parent.containsKey(child) && child_parent.get(child) == cur) {
-								cntRight++;
-								if(cntRight >= k) return true;
-								child_parent.remove(child);
-								if(child_parent.isEmpty()) {
-									if(cntRight >= k) return true;
-									else return false;
-								}
-							}
-							parent[child] = cur;
-							q1.add(child);
-						}
+
+	static void dfs_init(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Integer> parent) {
+		visited[root] = true;
+		if(relations.containsKey(root)) 
+			for(int x : relations.get(root)) {
+				if(!visited[x]) {
+					if(parent.containsKey(x) && parent.get(x) == root) {
+						points[0] += 1;
 					}
+					dfs_init(x, points, visited, relations, parent);
+				}
+			}	
+	}
+	static void dfs_all(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Integer> parent) {
+		if(relations.containsKey(root)) 
+			for(int x : relations.get(root)) {
+				if(!visited[x]) {
+					points[x] = points[root];
+					if(parent.containsKey(x) && parent.get(x) == root) points[x] -= 1;
+					if(parent.containsKey(root) && parent.get(root) == x) points[x] +=1;
+					visited[x] = true;
+					dfs_all(x, points, visited, relations, parent);
 				}
 			}
-			Queue<Integer> tmp = q;
-			q = q1;
-			q1 = tmp;
-		}
-		
-		if(cntRight >= k) return true;
-		else return false;
 	}
     static String storyOfATree(int n, int[][] edges, int k, int[][] guesses) {
         /*
          * Write your code here.
          */
+    	int[] points = new int[n];
+    	boolean[] visited = new boolean[n];
     	Map<Integer, Set<Integer>> relations = new HashMap<>();
+    	Map<Integer, Integer> parent = new HashMap<>();
+    	
     	for(int i = 0; i < edges.length; i++) {
-    		int a = edges[i][0];
-    		int b = edges[i][1];
+    		int a = edges[i][0] - 1;
+    		int b = edges[i][1] - 1;
     		if(relations.containsKey(a) == true) relations.get(a).add(b);
     		else {
     			Set<Integer> tmp = new HashSet<>();
@@ -84,9 +74,22 @@ public class The_Story_of_a_Tree {
     			relations.get(b).add(a);
     		}
     	}
+    	
+    	for(int i = 0; i < guesses.length; i++) {
+    		int p = guesses[i][0] - 1;
+    		int c = guesses[i][1] - 1;
+    		parent.put(c, p);
+    	}
+    	dfs_init(0, points, visited, relations, parent);
+    	Arrays.fill(visited, false);
+    	visited[0] = true;
+    	dfs_all(0, points, visited, relations, parent);
     	int cntWin = 0;
-    	for(int root = 1; root < n + 1; root++)
-    		if(checkRigth(root, n, relations, guesses, k)) cntWin++;
+    	for(int i = 0; i < n; i++)
+    		if(points[i] >= k)
+    			cntWin++;
+//    	for(int root = 1; root < n + 1; root++)
+//    		if(checkRigth(root, n, relations, guesses, k)) cntWin++;
     	if(cntWin == 0) return String.valueOf(cntWin) + "/" + String.valueOf(1);
     	int maxCommonDiv = calcMaxCommonDividor(n, cntWin);
     	return String.valueOf(cntWin/maxCommonDiv) + "/" + String.valueOf(n/maxCommonDiv);
