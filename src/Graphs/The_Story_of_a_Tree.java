@@ -25,25 +25,25 @@ public class The_Story_of_a_Tree {
 		return a;
 	}
 
-	static void dfs_init(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Integer> parent) {
+	static void dfs_init(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Set<Integer>> parent) {
 		visited[root] = true;
 		if(relations.containsKey(root)) 
 			for(int x : relations.get(root)) {
 				if(!visited[x]) {
-					if(parent.containsKey(x) && parent.get(x) == root) {
+					if(parent.containsKey(x) && parent.get(x).contains(root)) {
 						points[0] += 1;
 					}
 					dfs_init(x, points, visited, relations, parent);
 				}
 			}	
 	}
-	static void dfs_all(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Integer> parent) {
+	static void dfs_all(int root, int[] points, boolean[] visited, Map<Integer, Set<Integer>> relations, Map<Integer, Set<Integer>> parent) {
 		if(relations.containsKey(root)) 
 			for(int x : relations.get(root)) {
 				if(!visited[x]) {
 					points[x] = points[root];
-					if(parent.containsKey(x) && parent.get(x) == root) points[x] -= 1;
-					if(parent.containsKey(root) && parent.get(root) == x) points[x] +=1;
+					if(parent.containsKey(x) && parent.get(x).contains(root)) points[x] -= 1;
+					if(parent.containsKey(root) && parent.get(root).contains(x)) points[x] +=1;
 					visited[x] = true;
 					dfs_all(x, points, visited, relations, parent);
 				}
@@ -56,7 +56,7 @@ public class The_Story_of_a_Tree {
     	int[] points = new int[n];
     	boolean[] visited = new boolean[n];
     	Map<Integer, Set<Integer>> relations = new HashMap<>();
-    	Map<Integer, Integer> parent = new HashMap<>();
+    	Map<Integer, Set<Integer>> parent = new HashMap<>();
     	
     	for(int i = 0; i < edges.length; i++) {
     		int a = edges[i][0] - 1;
@@ -78,7 +78,12 @@ public class The_Story_of_a_Tree {
     	for(int i = 0; i < guesses.length; i++) {
     		int p = guesses[i][0] - 1;
     		int c = guesses[i][1] - 1;
-    		parent.put(c, p);
+    		if(parent.containsKey(c)) parent.get(c).add(p);
+    		else {
+    			Set<Integer> tmp = new HashSet<>();
+    			parent.put(c, tmp);
+    			parent.get(c).add(p);
+    		}
     	}
     	dfs_init(0, points, visited, relations, parent);
     	Arrays.fill(visited, false);
