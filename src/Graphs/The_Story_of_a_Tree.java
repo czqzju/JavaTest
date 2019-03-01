@@ -93,8 +93,6 @@ public class The_Story_of_a_Tree {
     	for(int i = 0; i < n; i++)
     		if(points[i] >= k)
     			cntWin++;
-//    	for(int root = 1; root < n + 1; root++)
-//    		if(checkRigth(root, n, relations, guesses, k)) cntWin++;
     	if(cntWin == 0) return String.valueOf(cntWin) + "/" + String.valueOf(1);
     	int maxCommonDiv = calcMaxCommonDividor(n, cntWin);
     	return String.valueOf(cntWin/maxCommonDiv) + "/" + String.valueOf(n/maxCommonDiv);
