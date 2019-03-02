@@ -75,7 +75,7 @@ class Result {
 
 }
 
-public class Really_Special_Subtree_kruskal {
+public class Really_Special_Subtree_Kruskal {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 //        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
