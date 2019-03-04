@@ -27,8 +27,6 @@ class Result_ {
      *  2. INTEGER m
      */
 	static long turan(long n, long r) {
-//		q,m=divmod(n,r)
-//		return m*(m-1)//2+(2*m+r*q)*(r-1)*q//2 if m else n*q*(r-1)//2
 		long q = n / r;
 		long m = n % r;
 		
@@ -37,12 +35,6 @@ class Result_ {
 
 	}
     public static long clique(long n, long m) {
-//    	l,r=1,3*n*n//(n*n-2*m)
-//    		    while l<r:
-//    		        x=(l+r)//2
-//    		        if turan(n,x)>=m: r=x
-//    		        else: l=x+1
-//    		    return r
     	long l = 1;
     	long r = 3 * n *n / (n * n - 2 * m);
     	while(l < r) {
