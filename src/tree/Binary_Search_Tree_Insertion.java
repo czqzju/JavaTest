@@ -39,9 +39,24 @@ class Binary_Search_Tree_Insertion {
 
 	public static Node insert(Node root, int data) {
 		if(root == null) return new Node(data);
-		
-        
-    	
+        Node cur = root;
+        Node parent = root;
+        boolean isRight = false; 
+        while(cur != null){
+            if(data > cur.data){
+                parent = cur;
+                cur = cur.right;
+                isRight = true;
+            }
+            else{
+                parent = cur;
+                cur = cur.left;
+                isRight = false;
+            }
+        }
+        if(isRight == true) parent.right = new Node(data);
+        else parent.left = new Node(data);
+        return root; 	
     }
 
 	public static void main(String[] args) {
